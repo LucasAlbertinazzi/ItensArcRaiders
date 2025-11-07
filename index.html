@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Itens – Quests, Benches e Reciclagem</title>
 <style>
+  .item[hidden]{ display:none !important; }
+section[hidden]{ display:none !important; }
   :root{
     --bg:#0e1014; --card:#141824; --muted:#9aa3b2; --text:#e8ecf1; --accent:#ffd54a; --accent2:#6ee7ff;
     --radius:18px;
@@ -177,11 +179,13 @@ const data = {
   ]
 };
 
-/* ---------- helpers ----------------------------------------------------- */
-const el = s => document.querySelector(s);
-const gridKeep = el('#grid-keep'), gridBenches = el('#grid-benches'), gridRecycle = el('#grid-recycle');
-const secKeep  = el('#keep'),       secBenches  = el('#benches'),      secRecycle  = el('#recycle');
-const countKeep = el('#count-keep'), countBenches = el('#count-benches'), countRecycle = el('#count-recycle');
+/* ===== helpers ===== */
+const $ = s => document.querySelector(s);
+const gridKeep = $('#grid-keep'), gridBenches = $('#grid-benches'), gridRecycle = $('#grid-recycle');
+const secKeep  = $('#keep'),     secBenches  = $('#benches'),     secRecycle  = $('#recycle');
+const countKeep = $('#count-keep'), countBenches = $('#count-benches'), countRecycle = $('#count-recycle');
+
+const norm = s => (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 
 function itemCard(it){
   const used = it.used ? `<span class="pill used">Used in: ${it.used}</span>` : '';
@@ -200,14 +204,6 @@ function mount(){
   updateCounts();
 }
 
-// normaliza para busca (sem acentos e sem caixa)
-const norm = s => (s || '')
-  .toString()
-  .normalize('NFD')
-  .replace(/[\u0300-\u036f]/g, '')
-  .toLowerCase();
-
-// realça termos
 function highlight(text, query){
   if(!query) return text;
   const q = query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
@@ -217,34 +213,30 @@ function highlight(text, query){
 function filter(q){
   const query = norm(q);
 
-  // função que filtra uma grade e retorna se teve resultados
-  const filterGrid = (grid) => {
+  const apply = (grid, section) => {
     let hits = 0;
     grid.querySelectorAll('.item').forEach(card=>{
       const en = norm(card.getAttribute('data-en'));
       const pt = norm(card.getAttribute('data-pt'));
       const ok = !query || en.includes(query) || pt.includes(query);
+
+      // ESCONDE/EXIBE o card
       card.hidden = !ok;
-
-      // highlight dinâmico
-      const title = card.querySelector('.title');
-      const sub   = card.querySelector('.subtitle');
-      title.innerHTML = highlight(card.getAttribute('data-en'), q);
-      sub.innerHTML   = highlight(card.getAttribute('data-pt'), q);
-
       if(ok) hits++;
+
+      // re-render títulos com/sem highlight usando os valores originais do dataset
+      card.querySelector('.title').innerHTML    = highlight(card.getAttribute('data-en'), q);
+      card.querySelector('.subtitle').innerHTML = highlight(card.getAttribute('data-pt'), q);
     });
+
+    // se a seção ficou sem itens visíveis, some
+    section.hidden = query && hits === 0;
     return hits;
   };
 
-  const hitsKeep    = filterGrid(gridKeep);
-  const hitsBenches = filterGrid(gridBenches);
-  const hitsRecycle = filterGrid(gridRecycle);
-
-  // esconde seção que ficou sem itens
-  secKeep.hidden    = query && hitsKeep    === 0;
-  secBenches.hidden = query && hitsBenches === 0;
-  secRecycle.hidden = query && hitsRecycle === 0;
+  apply(gridKeep, secKeep);
+  apply(gridBenches, secBenches);
+  apply(gridRecycle, secRecycle);
 
   updateCounts();
 }
@@ -256,11 +248,12 @@ function updateCounts(){
   countRecycle.textContent = `${visible(gridRecycle)}/${data.recycle.length}`;
 }
 
-/* ---------- boot -------------------------------------------------------- */
+/* ===== boot ===== */
 mount();
 document.getElementById('q').addEventListener('input', e=>filter(e.target.value));
 </script>
 </body>
 </html>
+
 
 
