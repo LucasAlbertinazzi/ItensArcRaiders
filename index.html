@@ -39,7 +39,7 @@ mark{background:linear-gradient(90deg,#3b82f620,#22d3ee33);color:inherit;border-
 <body>
 <header>
   <div class="wrap">
-    <h1>3D Make Store — Lista de Itens</h1>
+    <h1>Lista de Itens</h1>
     <div class="search">
       🔍 <input id="q" type="search" placeholder="Buscar por nome em PT-BR ou inglês…" autofocus>
     </div>
@@ -67,34 +67,98 @@ mark{background:linear-gradient(90deg,#3b82f620,#22d3ee33);color:inherit;border-
 <script>
 /* ===== dados resumidos (adicione os completos se quiser) ===== */
 const data = {
-  keep:[
-    {qty:'1x',en:'Camera Lens',pt:'Lente de Câmera',used:'Movie Night / Noite de Cinema'},
-    {qty:'1x',en:'Fireball Burner',pt:'Maçarico de Fogo',used:'What Goes Around / O Que Vai, Volta'},
-    {qty:'3x',en:'Hornet Driver',pt:'Motor de Vespa',used:'The Trifecta, Wasps and Hornets / A Tríplice, Vespas e Marimbondos'},
-    {qty:'2x',en:'Snitch Scanner',pt:'Scanner de Espião',used:'The Trifecta / A Tríplice'},
-    {qty:'1x',en:'Tick Pod',pt:'Cápsula de Carrapato',used:'Small, But Sinister / Pequeno, Mas Sinistro'},
-    {qty:'3x',en:'Wasp Driver',pt:'Motor de Marimbondo',used:'The Trifecta, Wasps and Hornets / A Tríplice, Vespas e Marimbondos'},
-    {qty:'1x',en:'Water Pump',pt:'Bomba de Água',used:'Unexpected Initiative / Iniciativa Inesperada'},
-    {qty:'1x',en:'Deflated Football',pt:'Bola Murcha',used:''},
+  keep: [
+    {qty:'1x', en:'Camera Lens', pt:'Lente de Câmera', used:'Movie Night / Noite de Cinema'},
+    {qty:'1x', en:'Fireball Burner', pt:'Maçarico de Fogo', used:'What Goes Around / O Que Vai, Volta'},
+    {qty:'3x', en:'Hornet Driver', pt:'Motor de Vespa', used:'The Trifecta, Wasps and Hornets / A Tríplice, Vespas e Marimbondos'},
+    {qty:'2x', en:'Snitch Scanner', pt:'Scanner de Espião', used:'The Trifecta / A Tríplice'},
+    {qty:'1x', en:'Tick Pod', pt:'Cápsula de Carrapato', used:'Small, But Sinister / Pequeno, Mas Sinistro'},
+    {qty:'3x', en:'Wasp Driver', pt:'Motor de Marimbondo', used:'The Trifecta, Wasps and Hornets / A Tríplice, Vespas e Marimbondos'},
+    {qty:'1x', en:'Water Pump', pt:'Bomba de Água', used:'Unexpected Initiative / Iniciativa Inesperada'},
+    {qty:'1x', en:'Deflated Football', pt:'Bola Murcha', used:''},
   ],
-  benches:[
-    {qty:'6x',en:'Bastion Cell',pt:'Célula de Bastião'},
-    {qty:'5x',en:'Bombardier Cell',pt:'Célula de Bombardeiro'},
-    {qty:'4x',en:'Rocketeer Driver',pt:'Motor de Fogueteiro'},
-    {qty:'8x',en:'Wasp Driver',pt:'Motor de Marimbondo'},
-    {qty:'8x',en:'Hornet Driver',pt:'Motor de Vespa'},
-    {qty:'5x',en:'Cooling Fan',pt:'Ventoinha de Resfriamento'},
-    {qty:'4x',en:'Sentinel Firing Core',pt:'Núcleo de Disparo Sentinela'},
+  benches: [
+    {qty:'6x', en:'Bastion Cell', pt:'Célula de Bastião'},
+    {qty:'5x', en:'Bombardier Cell', pt:'Célula de Bombardeiro'},
+    {qty:'4x', en:'Rocketeer Driver', pt:'Motor de Fogueteiro'},
+    {qty:'8x', en:'Wasp Driver', pt:'Motor de Marimbondo'},
+    {qty:'8x', en:'Hornet Driver', pt:'Motor de Vespa'},
+    {qty:'5x', en:'Cooling Fan', pt:'Ventoinha de Resfriamento'},
+    {qty:'4x', en:'Sentinel Firing Core', pt:'Núcleo de Disparo Sentinela'},
+    {qty:'3x', en:'Fried Motherboard', pt:'Placa-Mãe Queimada'},
+    {qty:'3x', en:'Rusted Gear', pt:'Engrenagem Enferrujada'},
+    {qty:'8x', en:'Tick Pod', pt:'Cápsula de Carrapato'},
+    {qty:'3x', en:'Rusted Shut Medical Kit', pt:'Kit Médico Enferrujado'},
+    {qty:'3x', en:'Power Cable', pt:'Cabo de Energia'},
+    {qty:'3x', en:'Motor', pt:'Motor'},
+    {qty:'3x', en:'Laboratory Reagents', pt:'Reagentes de Laboratório'},
+    {qty:'2x', en:'Cracked Bioscanner', pt:'Bioscanner Quebrado'},
+    {qty:'2x', en:'Surveyor Vault', pt:'Cofre de Topógrafo'},
+    {qty:'3x', en:'Toaster', pt:'Torradeira'},
+    {qty:'8x', en:'Snitch Scanner', pt:'Scanner de Espião'},
+    {qty:'8x', en:'Pop Trigger', pt:'Gatilho Pop'},
   ],
-  recycle:[
-    {en:'Ruined Accordion',pt:'Acordeão Danificado'},
-    {en:'Alarm Clock',pt:'Despertador'},
-    {en:'ARC Coolant',pt:'Refrigerante ARC'},
-    {en:'Broken Flashlight',pt:'Lanterna Quebrada'},
-    {en:'Broken Taser',pt:'Taser Quebrado'},
-    {en:'Cooling Coil',pt:'Bobina de Resfriamento'},
-    {en:'Turbo Pump',pt:'Bomba Turbo'},
-    {en:'Diving Goggles',pt:'Óculos de Mergulho'},
+  recycle: [
+    // 3A
+    {en:'Ruined Accordion', pt:'Acordeão Danificado'},
+    {en:'Alarm Clock', pt:'Despertador'},
+    {en:'ARC Coolant', pt:'Refrigerante ARC'},
+    {en:'ARC Flex Rubber', pt:'Borracha Flexível ARC'},
+    {en:'ARC Performance Steel', pt:'Aço de Alta Performance ARC'},
+    {en:'ARC Synthetic Resin', pt:'Resina Sintética ARC'},
+    {en:'ARC Thermo Lining', pt:'Forro Térmico ARC'},
+    {en:'Torn Blanket', pt:'Cobertor Rasgado'},
+    {en:'Bicycle Pump', pt:'Bomba de Bicicleta'},
+    {en:'Broken Flashlight', pt:'Lanterna Quebrada'},
+    {en:'Broken Guidance System', pt:'Sistema de Orientação Quebrado'},
+    {en:'Broken Handheld Radio', pt:'Rádio Portátil Quebrado'},
+    {en:'Broken Taser', pt:'Taser Quebrado'},
+    {en:'Coolant', pt:'Fluido de Resfriamento'},
+    {en:'Cooling Coil', pt:'Bobina de Resfriamento'},
+    {en:'Ruined Riot Shield', pt:'Escudo Anti-Motim Danificado'},
+    {en:'Turbo Pump', pt:'Bomba Turbo'},
+    {en:'Diving Goggles', pt:'Óculos de Mergulho'},
+    {en:'Expired Respirator', pt:'Respirador Vencido'},
+    {en:'Frying Pan', pt:'Frigideira'},
+    {en:'Headphones', pt:'Fones de Ouvido'},
+    {en:'Industrial Charger', pt:'Carregador Industrial'},
+    {en:'Industrial Magnet', pt:'Ímã Industrial'},
+    {en:'Polluted Air Filter', pt:'Filtro de Ar Poluído'},
+    {en:'Spring Cushion', pt:'Almofada de Mola'},
+    {en:'Water Filter', pt:'Filtro de Água'},
+    {en:'Portable TV', pt:'Televisão Portátil'},
+    {en:'Power Bank', pt:'Bateria Portátil'},
+    {en:'Projector', pt:'Projetor'},
+    {en:'Radio', pt:'Rádio'},
+    {en:'Remote Control', pt:'Controle Remoto'},
+    {en:'Surveyor Vault', pt:'Cofre de Topógrafo'},
+    {en:'Rubber Pad', pt:'Almofada de Borracha'},
+    {en:'Thermostat', pt:'Termostato'},
+    // 3B
+    {en:'Ruined Handcuffs', pt:'Algemas Danificadas'},
+    {en:'Burned ARC Circuitry', pt:'Circuitos ARC Queimados'},
+    {en:'Candle Holder', pt:'Castiçal'},
+    {en:'Crumpled Plastic Bottle', pt:'Garrafa Plástica Amassada'},
+    {en:'Damaged ARC Motion Core', pt:'Núcleo de Movimento ARC Danificado'},
+    {en:'Deflated Football', pt:'Bola Murcha'},
+    {en:'Degraded ARC Rubber', pt:'Borracha ARC Degradada'},
+    {en:'Rusted Bolts', pt:'Parafusos Enferrujados'},
+    {en:'Damaged Rocketeer Driver', pt:'Motor de Fogueteiro Danificado'},
+    {en:'Dried-Out ARC Resin', pt:'Resina ARC Ressecada'},
+    {en:'Garlic Press', pt:'Espremedor de Alho'},
+    {en:'Household Cleaner', pt:'Limpador Doméstico'},
+    {en:'Ice Cream Scooper', pt:'Pegador de Sorvete'},
+    {en:'Impure ARC Coolant', pt:'Refrigerante ARC Impuro'},
+    {en:'Metal Brackets', pt:'Suportes Metálicos'},
+    {en:'Number Plate', pt:'Placa de Número'},
+    {en:'Ripped Safety Vest', pt:'Colete de Segurança Rasgado'},
+    {en:'Tattered Clothes', pt:'Roupas Rasgadas'},
+    {en:'Tattered ARC Lining', pt:'Forro ARC Rasgado'},
+    {en:'Spotter Relay', pt:'Rele de Observação'},
+    {en:'Rusty ARC Steel', pt:'Aço ARC Enferrujado'},
+    {en:'Ruined Parachute', pt:'Paraquedas Danificado'},
+    {en:'Ruined Tactical Vest', pt:'Colete Tático Danificado'},
+    {en:'Ruined Baton', pt:'Cassetete Danificado'},
   ]
 };
 
@@ -153,3 +217,4 @@ $('#q').addEventListener('input',e=>filter(e.target.value));
 </script>
 </body>
 </html>
+
