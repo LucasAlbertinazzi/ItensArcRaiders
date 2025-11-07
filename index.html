@@ -177,15 +177,16 @@ const data = {
   ]
 };
 
-/* ---------- render ------------------------------------------------------ */
-const el = sel => document.querySelector(sel);
+/* ---------- helpers ----------------------------------------------------- */
+const el = s => document.querySelector(s);
 const gridKeep = el('#grid-keep'), gridBenches = el('#grid-benches'), gridRecycle = el('#grid-recycle');
+const secKeep  = el('#keep'),       secBenches  = el('#benches'),      secRecycle  = el('#recycle');
 const countKeep = el('#count-keep'), countBenches = el('#count-benches'), countRecycle = el('#count-recycle');
 
 function itemCard(it){
   const used = it.used ? `<span class="pill used">Used in: ${it.used}</span>` : '';
   const qty  = it.qty  ? `<span class="pill qty">${it.qty}</span>` : '';
-  return `<div class="item" data-en="${it.en.toLowerCase()}" data-pt="${it.pt.toLowerCase()}">
+  return `<div class="item" data-en="${it.en}" data-pt="${it.pt}">
     <div class="title">${it.en}</div>
     <div class="subtitle">${it.pt}</div>
     <div class="meta">${qty}${used}</div>
@@ -198,32 +199,61 @@ function mount(){
   gridRecycle.innerHTML = data.recycle.map(itemCard).join('');
   updateCounts();
 }
-function updateCounts(){
-  countKeep.textContent    = `${gridKeep.querySelectorAll('.item:not([hidden])').length}/${data.keep.length}`;
-  countBenches.textContent = `${gridBenches.querySelectorAll('.item:not([hidden])').length}/${data.benches.length}`;
-  countRecycle.textContent = `${gridRecycle.querySelectorAll('.item:not([hidden])').length}/${data.recycle.length}`;
-}
 
+// normaliza para busca (sem acentos e sem caixa)
+const norm = s => (s || '')
+  .toString()
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase();
+
+// realça termos
 function highlight(text, query){
   if(!query) return text;
-  const esc = query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  return text.replace(new RegExp(esc,'ig'), m=>`<mark>${m}</mark>`);
+  const q = query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return text.replace(new RegExp(q,'ig'), m=>`<mark>${m}</mark>`);
 }
 
 function filter(q){
-  const query = q.trim().toLowerCase();
-  document.querySelectorAll('.item').forEach(card=>{
-    const en = card.getAttribute('data-en'), pt = card.getAttribute('data-pt');
-    const ok = !query || en.includes(query) || pt.includes(query);
-    card.hidden = !ok;
+  const query = norm(q);
 
-    // highlight titles
-    const title = card.querySelector('.title');
-    const subtitle = card.querySelector('.subtitle');
-    title.innerHTML = highlight(title.textContent, q);
-    subtitle.innerHTML = highlight(subtitle.textContent, q);
-  });
+  // função que filtra uma grade e retorna se teve resultados
+  const filterGrid = (grid) => {
+    let hits = 0;
+    grid.querySelectorAll('.item').forEach(card=>{
+      const en = norm(card.getAttribute('data-en'));
+      const pt = norm(card.getAttribute('data-pt'));
+      const ok = !query || en.includes(query) || pt.includes(query);
+      card.hidden = !ok;
+
+      // highlight dinâmico
+      const title = card.querySelector('.title');
+      const sub   = card.querySelector('.subtitle');
+      title.innerHTML = highlight(card.getAttribute('data-en'), q);
+      sub.innerHTML   = highlight(card.getAttribute('data-pt'), q);
+
+      if(ok) hits++;
+    });
+    return hits;
+  };
+
+  const hitsKeep    = filterGrid(gridKeep);
+  const hitsBenches = filterGrid(gridBenches);
+  const hitsRecycle = filterGrid(gridRecycle);
+
+  // esconde seção que ficou sem itens
+  secKeep.hidden    = query && hitsKeep    === 0;
+  secBenches.hidden = query && hitsBenches === 0;
+  secRecycle.hidden = query && hitsRecycle === 0;
+
   updateCounts();
+}
+
+function updateCounts(){
+  const visible = g => g.querySelectorAll('.item:not([hidden])').length;
+  countKeep.textContent    = `${visible(gridKeep)}/${data.keep.length}`;
+  countBenches.textContent = `${visible(gridBenches)}/${data.benches.length}`;
+  countRecycle.textContent = `${visible(gridRecycle)}/${data.recycle.length}`;
 }
 
 /* ---------- boot -------------------------------------------------------- */
@@ -232,3 +262,4 @@ document.getElementById('q').addEventListener('input', e=>filter(e.target.value)
 </script>
 </body>
 </html>
+
