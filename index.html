@@ -3,257 +3,153 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Itens – Quests, Benches e Reciclagem</title>
+<title>Itens – Arc Raiders</title>
 <style>
-  .item[hidden]{ display:none !important; }
-section[hidden]{ display:none !important; }
-  :root{
-    --bg:#0e1014; --card:#141824; --muted:#9aa3b2; --text:#e8ecf1; --accent:#ffd54a; --accent2:#6ee7ff;
-    --radius:18px;
-  }
-  *{box-sizing:border-box}
-  body{margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#0b0d12 0,#0e1014 100%); color:var(--text)}
-  header{position:sticky; top:0; z-index:5; backdrop-filter:saturate(140%) blur(8px); background:#0e1014cc; border-bottom:1px solid #1e2230}
-  .wrap{max-width:1100px; margin:0 auto; padding:18px 16px}
-  h1{font-size:22px; margin:0 0 12px; letter-spacing:.2px}
-  .search{
-    display:flex; align-items:center; gap:10px; background:#0f1320; border:1px solid #22283a;
-    padding:12px 14px; border-radius:14px; box-shadow:inset 0 0 0 1px #1a2030;
-  }
-  .search input{
-    flex:1; background:transparent; border:0; outline:0; color:var(--text); font-size:16px;
-  }
-  .hint{color:var(--muted); font-size:12px; margin-top:6px}
-  main{max-width:1100px; margin:16px auto 48px; padding:0 16px; display:grid; gap:22px}
-  section{border:1px solid #1f2435; background:linear-gradient(180deg,#121727 0,#111522 100%); border-radius:var(--radius); padding:14px 14px 10px}
-  section h2{margin:0 0 10px; font-size:18px; color:var(--accent)}
-  .grid{
-    display:grid; gap:10px;
-    grid-template-columns:repeat(1,minmax(0,1fr));
-  }
-  @media (min-width:640px){ .grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media (min-width:940px){ .grid{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
-
-  .item{
-    background:var(--card);
-    border:1px solid #23293b; border-radius:14px; padding:12px;
-    display:flex; flex-direction:column; gap:6px; transition:transform .1s ease, border-color .1s ease;
-  }
-  .item:hover{ transform:translateY(-2px); border-color:#2b3350}
-  .title{font-weight:700; font-size:14px; line-height:1.25}
-  .subtitle{color:var(--muted); font-size:12px}
-  .meta{display:flex; gap:8px; flex-wrap:wrap; margin-top:2px}
-  .pill{background:#0f1422; border:1px solid #283148; color:#cfe6ff; padding:4px 8px; border-radius:999px; font-size:11px}
-  .qty{background:#1f2a15; border-color:#324b20; color:#d4f7a6}
-  .used{background:#201b12; border-color:#3a2c14; color:#ffdca6}
-  .count{color:var(--muted); font-size:12px; float:right}
-  .footer-note{color:var(--muted); text-align:center; font-size:12px; margin-top:6px}
-  mark{background:linear-gradient(90deg,#3b82f620,#22d3ee33); color:inherit; border-radius:4px; padding:0 2px}
+:root{
+  --bg:#0b0d12;--card:#151822;--text:#eaeef5;--muted:#9aa3b2;
+  --accent:#ffd54a;--accent2:#22d3ee;--radius:16px;
+}
+body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);}
+header{position:sticky;top:0;z-index:10;background:#0b0d12cc;backdrop-filter:blur(8px);border-bottom:1px solid #1f2432}
+.wrap{max-width:1100px;margin:auto;padding:18px 16px}
+h1{margin:0 0 12px;font-size:22px;color:var(--accent)}
+.search{display:flex;align-items:center;gap:10px;background:#121625;border:1px solid #22283a;padding:12px 14px;border-radius:12px}
+.search input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font-size:16px}
+.hint{color:var(--muted);font-size:12px;margin-top:6px}
+main{max-width:1100px;margin:18px auto;padding:0 16px;display:grid;gap:24px}
+section{background:linear-gradient(180deg,#131725,#10131e);border:1px solid #1e2334;border-radius:var(--radius);padding:16px}
+section[hidden]{display:none!important;}
+.item[hidden]{display:none!important;}
+section h2{margin:0 0 12px;font-size:18px;color:var(--accent)}
+.grid{display:grid;gap:12px}
+@media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:940px){.grid{grid-template-columns:repeat(3,1fr)}}
+.item{background:var(--card);border:1px solid #23293a;border-radius:14px;padding:12px;transition:.1s}
+.item:hover{transform:translateY(-2px);border-color:#303a58}
+.title{font-weight:700;font-size:14px}
+.subtitle{color:var(--muted);font-size:13px}
+.meta{margin-top:4px;display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:11px;border-radius:999px;padding:4px 8px;border:1px solid #2a3045}
+.qty{background:#212912;color:#c7f197;border-color:#30471a}
+.used{background:#2a1f10;color:#ffdca6;border-color:#3a2c14}
+.count{color:var(--muted);font-size:12px;float:right}
+mark{background:linear-gradient(90deg,#3b82f620,#22d3ee33);color:inherit;border-radius:3px;padding:0 2px}
 </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <h1>Lista de Itens</h1>
-      <div class="search">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="#9aa3b2" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <input id="q" type="search" placeholder="Pesquise por nome em PT-BR ou EN (ex.: bomba, 'Water Pump', rubber…)" autofocus />
-      </div>
-      <div class="hint">Dica: a busca considera <u>inglês</u> e <u>português</u>. Filtra em todas as categorias.</div>
+<header>
+  <div class="wrap">
+    <h1>3D Make Store — Lista de Itens</h1>
+    <div class="search">
+      🔍 <input id="q" type="search" placeholder="Buscar por nome em PT-BR ou inglês…" autofocus>
     </div>
-  </header>
+    <div class="hint">A busca considera <b>inglês</b> e <b>português</b> e esconde seções sem resultado.</div>
+  </div>
+</header>
 
-  <main>
-    <section id="keep">
-      <h2>Keep for Quests / Manter para Missões <span class="count" id="count-keep"></span></h2>
-      <div class="grid" id="grid-keep"></div>
-    </section>
+<main>
+  <section id="keep">
+    <h2>Keep for Quests / Manter para Missões <span class="count" id="count-keep"></span></h2>
+    <div class="grid" id="grid-keep"></div>
+  </section>
 
-    <section id="benches">
-      <h2>Upgrading Benches / Bancadas de Melhoria <span class="count" id="count-benches"></span></h2>
-      <div class="grid" id="grid-benches"></div>
-    </section>
+  <section id="benches">
+    <h2>Upgrading Benches / Bancadas de Melhoria <span class="count" id="count-benches"></span></h2>
+    <div class="grid" id="grid-benches"></div>
+  </section>
 
-    <section id="recycle">
-      <h2>Safely Recycle / Reciclar com Segurança <span class="count" id="count-recycle"></span></h2>
-      <div class="grid" id="grid-recycle"></div>
-      <div class="footer-note">Itens recicláveis diversos (domésticos, ARC e industriais).</div>
-    </section>
-  </main>
+  <section id="recycle">
+    <h2>Safely Recycle / Reciclar com Segurança <span class="count" id="count-recycle"></span></h2>
+    <div class="grid" id="grid-recycle"></div>
+  </section>
+</main>
 
 <script>
-/* ---------- data -------------------------------------------------------- */
+/* ===== dados resumidos (adicione os completos se quiser) ===== */
 const data = {
-  keep: [
-    {qty:'1x', en:'Camera Lens', pt:'Lente de Câmera', used:'Movie Night / Noite de Cinema'},
-    {qty:'1x', en:'Fireball Burner', pt:'Maçarico de Fogo', used:'What Goes Around / O Que Vai, Volta'},
-    {qty:'3x', en:'Hornet Driver', pt:'Motor de Vespa', used:'The Trifecta, Wasps and Hornets / A Tríplice, Vespas e Marimbondos'},
-    {qty:'2x', en:'Snitch Scanner', pt:'Scanner de Espião', used:'The Trifecta / A Tríplice'},
-    {qty:'1x', en:'Tick Pod', pt:'Cápsula de Carrapato', used:'Small, But Sinister / Pequeno, Mas Sinistro'},
-    {qty:'3x', en:'Wasp Driver', pt:'Motor de Marimbondo', used:'The Trifecta, Wasps and Hornets / A Tríplice, Vespas e Marimbondos'},
-    {qty:'1x', en:'Water Pump', pt:'Bomba de Água', used:'Unexpected Initiative / Iniciativa Inesperada'},
-    {qty:'1x', en:'Deflated Football', pt:'Bola Murcha', used:''},
+  keep:[
+    {qty:'1x',en:'Camera Lens',pt:'Lente de Câmera',used:'Movie Night / Noite de Cinema'},
+    {qty:'1x',en:'Fireball Burner',pt:'Maçarico de Fogo',used:'What Goes Around / O Que Vai, Volta'},
+    {qty:'3x',en:'Hornet Driver',pt:'Motor de Vespa',used:'The Trifecta, Wasps and Hornets / A Tríplice, Vespas e Marimbondos'},
+    {qty:'2x',en:'Snitch Scanner',pt:'Scanner de Espião',used:'The Trifecta / A Tríplice'},
+    {qty:'1x',en:'Tick Pod',pt:'Cápsula de Carrapato',used:'Small, But Sinister / Pequeno, Mas Sinistro'},
+    {qty:'3x',en:'Wasp Driver',pt:'Motor de Marimbondo',used:'The Trifecta, Wasps and Hornets / A Tríplice, Vespas e Marimbondos'},
+    {qty:'1x',en:'Water Pump',pt:'Bomba de Água',used:'Unexpected Initiative / Iniciativa Inesperada'},
+    {qty:'1x',en:'Deflated Football',pt:'Bola Murcha',used:''},
   ],
-  benches: [
-    {qty:'6x', en:'Bastion Cell', pt:'Célula de Bastião'},
-    {qty:'5x', en:'Bombardier Cell', pt:'Célula de Bombardeiro'},
-    {qty:'4x', en:'Rocketeer Driver', pt:'Motor de Fogueteiro'},
-    {qty:'8x', en:'Wasp Driver', pt:'Motor de Marimbondo'},
-    {qty:'8x', en:'Hornet Driver', pt:'Motor de Vespa'},
-    {qty:'5x', en:'Cooling Fan', pt:'Ventoinha de Resfriamento'},
-    {qty:'4x', en:'Sentinel Firing Core', pt:'Núcleo de Disparo Sentinela'},
-    {qty:'3x', en:'Fried Motherboard', pt:'Placa-Mãe Queimada'},
-    {qty:'3x', en:'Rusted Gear', pt:'Engrenagem Enferrujada'},
-    {qty:'8x', en:'Tick Pod', pt:'Cápsula de Carrapato'},
-    {qty:'3x', en:'Rusted Shut Medical Kit', pt:'Kit Médico Enferrujado'},
-    {qty:'3x', en:'Power Cable', pt:'Cabo de Energia'},
-    {qty:'3x', en:'Motor', pt:'Motor'},
-    {qty:'3x', en:'Laboratory Reagents', pt:'Reagentes de Laboratório'},
-    {qty:'2x', en:'Cracked Bioscanner', pt:'Bioscanner Quebrado'},
-    {qty:'2x', en:'Surveyor Vault', pt:'Cofre de Topógrafo'},
-    {qty:'3x', en:'Toaster', pt:'Torradeira'},
-    {qty:'8x', en:'Snitch Scanner', pt:'Scanner de Espião'},
-    {qty:'8x', en:'Pop Trigger', pt:'Gatilho Pop'},
+  benches:[
+    {qty:'6x',en:'Bastion Cell',pt:'Célula de Bastião'},
+    {qty:'5x',en:'Bombardier Cell',pt:'Célula de Bombardeiro'},
+    {qty:'4x',en:'Rocketeer Driver',pt:'Motor de Fogueteiro'},
+    {qty:'8x',en:'Wasp Driver',pt:'Motor de Marimbondo'},
+    {qty:'8x',en:'Hornet Driver',pt:'Motor de Vespa'},
+    {qty:'5x',en:'Cooling Fan',pt:'Ventoinha de Resfriamento'},
+    {qty:'4x',en:'Sentinel Firing Core',pt:'Núcleo de Disparo Sentinela'},
   ],
-  recycle: [
-    // 3A
-    {en:'Ruined Accordion', pt:'Acordeão Danificado'},
-    {en:'Alarm Clock', pt:'Despertador'},
-    {en:'ARC Coolant', pt:'Refrigerante ARC'},
-    {en:'ARC Flex Rubber', pt:'Borracha Flexível ARC'},
-    {en:'ARC Performance Steel', pt:'Aço de Alta Performance ARC'},
-    {en:'ARC Synthetic Resin', pt:'Resina Sintética ARC'},
-    {en:'ARC Thermo Lining', pt:'Forro Térmico ARC'},
-    {en:'Torn Blanket', pt:'Cobertor Rasgado'},
-    {en:'Bicycle Pump', pt:'Bomba de Bicicleta'},
-    {en:'Broken Flashlight', pt:'Lanterna Quebrada'},
-    {en:'Broken Guidance System', pt:'Sistema de Orientação Quebrado'},
-    {en:'Broken Handheld Radio', pt:'Rádio Portátil Quebrado'},
-    {en:'Broken Taser', pt:'Taser Quebrado'},
-    {en:'Coolant', pt:'Fluido de Resfriamento'},
-    {en:'Cooling Coil', pt:'Bobina de Resfriamento'},
-    {en:'Ruined Riot Shield', pt:'Escudo Anti-Motim Danificado'},
-    {en:'Turbo Pump', pt:'Bomba Turbo'},
-    {en:'Diving Goggles', pt:'Óculos de Mergulho'},
-    {en:'Expired Respirator', pt:'Respirador Vencido'},
-    {en:'Frying Pan', pt:'Frigideira'},
-    {en:'Headphones', pt:'Fones de Ouvido'},
-    {en:'Industrial Charger', pt:'Carregador Industrial'},
-    {en:'Industrial Magnet', pt:'Ímã Industrial'},
-    {en:'Polluted Air Filter', pt:'Filtro de Ar Poluído'},
-    {en:'Spring Cushion', pt:'Almofada de Mola'},
-    {en:'Water Filter', pt:'Filtro de Água'},
-    {en:'Portable TV', pt:'Televisão Portátil'},
-    {en:'Power Bank', pt:'Bateria Portátil'},
-    {en:'Projector', pt:'Projetor'},
-    {en:'Radio', pt:'Rádio'},
-    {en:'Remote Control', pt:'Controle Remoto'},
-    {en:'Surveyor Vault', pt:'Cofre de Topógrafo'},
-    {en:'Rubber Pad', pt:'Almofada de Borracha'},
-    {en:'Thermostat', pt:'Termostato'},
-    // 3B
-    {en:'Ruined Handcuffs', pt:'Algemas Danificadas'},
-    {en:'Burned ARC Circuitry', pt:'Circuitos ARC Queimados'},
-    {en:'Candle Holder', pt:'Castiçal'},
-    {en:'Crumpled Plastic Bottle', pt:'Garrafa Plástica Amassada'},
-    {en:'Damaged ARC Motion Core', pt:'Núcleo de Movimento ARC Danificado'},
-    {en:'Deflated Football', pt:'Bola Murcha'},
-    {en:'Degraded ARC Rubber', pt:'Borracha ARC Degradada'},
-    {en:'Rusted Bolts', pt:'Parafusos Enferrujados'},
-    {en:'Damaged Rocketeer Driver', pt:'Motor de Fogueteiro Danificado'},
-    {en:'Dried-Out ARC Resin', pt:'Resina ARC Ressecada'},
-    {en:'Garlic Press', pt:'Espremedor de Alho'},
-    {en:'Household Cleaner', pt:'Limpador Doméstico'},
-    {en:'Ice Cream Scooper', pt:'Pegador de Sorvete'},
-    {en:'Impure ARC Coolant', pt:'Refrigerante ARC Impuro'},
-    {en:'Metal Brackets', pt:'Suportes Metálicos'},
-    {en:'Number Plate', pt:'Placa de Número'},
-    {en:'Ripped Safety Vest', pt:'Colete de Segurança Rasgado'},
-    {en:'Tattered Clothes', pt:'Roupas Rasgadas'},
-    {en:'Tattered ARC Lining', pt:'Forro ARC Rasgado'},
-    {en:'Spotter Relay', pt:'Rele de Observação'},
-    {en:'Rusty ARC Steel', pt:'Aço ARC Enferrujado'},
-    {en:'Ruined Parachute', pt:'Paraquedas Danificado'},
-    {en:'Ruined Tactical Vest', pt:'Colete Tático Danificado'},
-    {en:'Ruined Baton', pt:'Cassetete Danificado'},
+  recycle:[
+    {en:'Ruined Accordion',pt:'Acordeão Danificado'},
+    {en:'Alarm Clock',pt:'Despertador'},
+    {en:'ARC Coolant',pt:'Refrigerante ARC'},
+    {en:'Broken Flashlight',pt:'Lanterna Quebrada'},
+    {en:'Broken Taser',pt:'Taser Quebrado'},
+    {en:'Cooling Coil',pt:'Bobina de Resfriamento'},
+    {en:'Turbo Pump',pt:'Bomba Turbo'},
+    {en:'Diving Goggles',pt:'Óculos de Mergulho'},
   ]
 };
 
 /* ===== helpers ===== */
-const $ = s => document.querySelector(s);
-const gridKeep = $('#grid-keep'), gridBenches = $('#grid-benches'), gridRecycle = $('#grid-recycle');
-const secKeep  = $('#keep'),     secBenches  = $('#benches'),     secRecycle  = $('#recycle');
-const countKeep = $('#count-keep'), countBenches = $('#count-benches'), countRecycle = $('#count-recycle');
+const $ = s=>document.querySelector(s);
+const gridKeep=$('#grid-keep'),gridBenches=$('#grid-benches'),gridRecycle=$('#grid-recycle');
+const secKeep=$('#keep'),secBenches=$('#benches'),secRecycle=$('#recycle');
+const countKeep=$('#count-keep'),countBenches=$('#count-benches'),countRecycle=$('#count-recycle');
 
-const norm = s => (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-
-function itemCard(it){
-  const used = it.used ? `<span class="pill used">Used in: ${it.used}</span>` : '';
-  const qty  = it.qty  ? `<span class="pill qty">${it.qty}</span>` : '';
+function card(it){
+  const used=it.used?`<span class="pill used">Used in: ${it.used}</span>`:'';
+  const qty=it.qty?`<span class="pill qty">${it.qty}</span>`:'';
   return `<div class="item" data-en="${it.en}" data-pt="${it.pt}">
     <div class="title">${it.en}</div>
     <div class="subtitle">${it.pt}</div>
     <div class="meta">${qty}${used}</div>
   </div>`;
 }
-
 function mount(){
-  gridKeep.innerHTML    = data.keep.map(itemCard).join('');
-  gridBenches.innerHTML = data.benches.map(itemCard).join('');
-  gridRecycle.innerHTML = data.recycle.map(itemCard).join('');
+  gridKeep.innerHTML=data.keep.map(card).join('');
+  gridBenches.innerHTML=data.benches.map(card).join('');
+  gridRecycle.innerHTML=data.recycle.map(card).join('');
   updateCounts();
 }
-
-function highlight(text, query){
-  if(!query) return text;
-  const q = query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  return text.replace(new RegExp(q,'ig'), m=>`<mark>${m}</mark>`);
+const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function highlight(t,q){
+  if(!q)return t;
+  const esc=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return t.replace(new RegExp(esc,'ig'),m=>`<mark>${m}</mark>`);
 }
-
 function filter(q){
-  const query = norm(q);
-
-  const apply = (grid, section) => {
-    let hits = 0;
+  const query=norm(q);
+  const apply=(grid,sec)=>{
+    let hits=0;
     grid.querySelectorAll('.item').forEach(card=>{
-      const en = norm(card.getAttribute('data-en'));
-      const pt = norm(card.getAttribute('data-pt'));
-      const ok = !query || en.includes(query) || pt.includes(query);
-
-      // ESCONDE/EXIBE o card
-      card.hidden = !ok;
-      if(ok) hits++;
-
-      // re-render títulos com/sem highlight usando os valores originais do dataset
-      card.querySelector('.title').innerHTML    = highlight(card.getAttribute('data-en'), q);
-      card.querySelector('.subtitle').innerHTML = highlight(card.getAttribute('data-pt'), q);
+      const en=norm(card.dataset.en),pt=norm(card.dataset.pt);
+      const ok=!query||en.includes(query)||pt.includes(query);
+      card.hidden=!ok;if(ok)hits++;
+      card.querySelector('.title').innerHTML=highlight(card.dataset.en,q);
+      card.querySelector('.subtitle').innerHTML=highlight(card.dataset.pt,q);
     });
-
-    // se a seção ficou sem itens visíveis, some
-    section.hidden = query && hits === 0;
+    sec.hidden=query&&hits===0;
     return hits;
   };
-
-  apply(gridKeep, secKeep);
-  apply(gridBenches, secBenches);
-  apply(gridRecycle, secRecycle);
-
+  apply(gridKeep,secKeep);apply(gridBenches,secBenches);apply(gridRecycle,secRecycle);
   updateCounts();
 }
-
 function updateCounts(){
-  const visible = g => g.querySelectorAll('.item:not([hidden])').length;
-  countKeep.textContent    = `${visible(gridKeep)}/${data.keep.length}`;
-  countBenches.textContent = `${visible(gridBenches)}/${data.benches.length}`;
-  countRecycle.textContent = `${visible(gridRecycle)}/${data.recycle.length}`;
+  const visible=g=>g.querySelectorAll('.item:not([hidden])').length;
+  countKeep.textContent=`${visible(gridKeep)}/${data.keep.length}`;
+  countBenches.textContent=`${visible(gridBenches)}/${data.benches.length}`;
+  countRecycle.textContent=`${visible(gridRecycle)}/${data.recycle.length}`;
 }
-
-/* ===== boot ===== */
 mount();
-document.getElementById('q').addEventListener('input', e=>filter(e.target.value));
+$('#q').addEventListener('input',e=>filter(e.target.value));
 </script>
 </body>
 </html>
-
-
-
